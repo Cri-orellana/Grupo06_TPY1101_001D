@@ -1,0 +1,21 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Ejecutar Macrofit Local",
+            "request": "launch",
+            "mainClass": "com.proyecto.macrofit.MacrofitApplication",
+            "env": {
+                "DB_NAME": "macrofit_db",
+                "DB_USER": "admin_macrofit",
+                "DB_PASSWORD": "password123",
+                "SSH_HOST": "165.1.120.142",
+                "SSH_USER": "ubuntu",
+                "SSH_KEY_PATH": "C:\\Users\\crist\\OneDrive\\Escritorio\\ssh-key-2026-04-17 (2).key",
+                "API_KEY": "2cc1d2610130469cb33eed6cc81abd0e",
+                "API_URL": "https://api.spoonacular.com/recipes/complexSearch"
+            }
+        }
+    ]
+}

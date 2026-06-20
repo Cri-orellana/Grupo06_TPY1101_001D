@@ -59,6 +59,22 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.7.5")
     implementation("androidx.compose.material:material")
     implementation("io.coil-kt:coil-compose:2.4.0")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("com.pierfrancescosoffritti.androidyoutubeplayer:core:13.0.0")
+
+    // CameraX
+    val cameraxVersion = "1.3.4"
+    implementation("androidx.camera:camera-camera2:$cameraxVersion")
+    implementation("androidx.camera:camera-lifecycle:$cameraxVersion")
+    implementation("androidx.camera:camera-view:$cameraxVersion")
+
+    // ML Kit
+    implementation("com.google.mlkit:barcode-scanning:17.2.0")
+    implementation("com.google.mlkit:text-recognition:16.0.0")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

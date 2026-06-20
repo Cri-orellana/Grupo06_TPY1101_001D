@@ -1,5 +1,6 @@
 package com.duoc.macrofit.usuarios.viewmodel
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -21,9 +22,7 @@ class LoginViewModel : ViewModel() {
     var errorMessage by mutableStateOf<String?>(null)
     var usuarioLogueado by mutableStateOf<Usuario?>(null)
 
-    // Función que se ejecuta al presionar el botón "Ingresar"
     fun login() {
-        // Validación básica antes de ir a internet
         if (correo.isBlank() || contrasena.isBlank()) {
             errorMessage = "Por favor, completa todos los campos"
             return
@@ -32,25 +31,31 @@ class LoginViewModel : ViewModel() {
         isLoading = true
         errorMessage = null
 
-        // viewModelScope.launch crea la "corrutina" para no congelar la app
+        Log.d(
+            "MACROFIT_DEBUG",
+            "Intentando conectar a: " + com.duoc.macrofit.usuarios.utils.Constants.BASE_URL
+        )
+
         viewModelScope.launch {
             try {
                 val credenciales = LoginRequest(correo, contrasena)
                 val response = RetrofitClient.apiService.login(credenciales)
 
                 if (response.isSuccessful && response.body() != null) {
-                    // HTTP 200: Login exitoso
                     usuarioLogueado = response.body()
-                    SessionManager.usuarioActual = response.body()
+                    SessionManager.guardarSesion(response.body()!!)
                 } else {
-                    // HTTP 401 u otro error de credenciales
-                    errorMessage = "Credenciales incorrectas. Inténtalo de nuevo."
+                    val codigoError = response.code()
+                    val cuerpoError = response.errorBody()?.string()
+
+                    Log.e("MACROFIT_DEBUG", "El servidor respondió pero rechazó el login. Código: $codigoError, Detalle: $cuerpoError")
+
+                    errorMessage = "Error $codigoError: Credenciales incorrectas o servidor rechazó la petición."
                 }
             } catch (e: Exception) {
-                // Error de red (el backend está apagado, no hay internet, etc.)
-                errorMessage = "Error de conexión: Verifica que el servidor esté encendido."
+                Log.e("MACROFIT_DEBUG", "ERROR REAL DE RETROFIT: ", e)
+                errorMessage = "No se pudo conectar al servidor: ${e.localizedMessage}"
             } finally {
-                // Pase lo que pase, apagamos el circulito de carga
                 isLoading = false
             }
         }
